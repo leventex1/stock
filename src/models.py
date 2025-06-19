@@ -19,9 +19,8 @@ class BaseModel:
 
 class StockPrice(Base, BaseModel):
     __tablename__ = "stock_prices"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    symbol = Column(String, nullable=False)
-    datetime = Column(DateTime, nullable=False)
+    symbol = Column(String, primary_key=True)
+    datetime = Column(DateTime, primary_key=True)
     open = Column(Float, nullable=False)
     high = Column(Float, nullable=False)
     low = Column(Float, nullable=False)

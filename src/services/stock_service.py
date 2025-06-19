@@ -17,6 +17,10 @@ class StockService:
         stock_prices = self.time_series_converter.convert(response)
         print(f"Queried {len(stock_prices)} stock prices")
         for stock_price in stock_prices:
+            existing = main_db_session.query(StockPrice).filter_by(
+                symbol=stock_price.symbol,
+                datetime=stock_price.datetime
+            ).first()
             main_db_session.merge(stock_price)
         main_db_session.commit()
 

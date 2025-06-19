@@ -3,6 +3,7 @@ from typing import Optional
 from .api import APIParams
 from ..models import StockPrice
 from abc import ABC, abstractmethod
+from ..utils.date_utils import parse_datetime
 
 class Interval:
     MIN_1="1min"
@@ -29,7 +30,7 @@ class TimeSeriesParams(APIParams):
     def __init__(self, 
                  symbol: str, 
                  interval: str,
-                 outputsize: int = 30,
+                 outputsize: Optional[int] = None,
                  date: Optional[datetime] = None,
                  start_date: Optional[datetime] = None,
                  end_date: Optional[datetime] = None
@@ -52,12 +53,12 @@ class TwelvedataTimeSeriesConverter(TimeSeriesConverter):
     def convert(self, data) -> list[StockPrice]:
         result: list[StockPrice] = []
         symbol = data.get("meta").get("symbol")
-        datetime.strptime
         for value in data.get("values"):
+            date_time = value.get("datetime")
             result.append(
                 StockPrice(
                     symbol=symbol,
-                    datetime=datetime.strptime(value.get("datetime"), "%Y-%m-%d %H:%M:%S"),
+                    datetime=parse_datetime(s=date_time),
                     open=float(value.get("open")),
                     high=float(value.get("high")),
                     low=float(value.get("low")),
