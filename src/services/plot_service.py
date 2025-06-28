@@ -6,7 +6,7 @@ from ..models import StockPrice
 
 class PlotService:
 
-    def plot_stock_prices(self, prices: list[StockPrice]) -> None:
+    def plot_stock_prices(self, prices: list[StockPrice], scatter_plot: bool=False) -> None:
         prices = sorted(prices, key=lambda p: p.datetime)
 
         dates = [p.datetime for p in prices]
@@ -17,10 +17,16 @@ class PlotService:
 
         plt.figure(figsize=(12, 6))
 
-        plt.plot(dates, opens, label="Open", marker="o")
-        plt.plot(dates, highs, label="High", marker="^")
-        plt.plot(dates, lows, label="Low", marker="v")
-        plt.plot(dates, closes, label="Close", marker="s")
+        if scatter_plot:
+            plt.scatter(dates, opens, label="Open", marker="o")
+            plt.scatter(dates, highs, label="High", marker="^")
+            plt.scatter(dates, lows, label="Low", marker="v")
+            plt.scatter(dates, closes, label="Close", marker="s")
+        else:
+            plt.plot(dates, opens, label="Open", marker="o")
+            plt.plot(dates, highs, label="High", marker="^")
+            plt.plot(dates, lows, label="Low", marker="v")
+            plt.plot(dates, closes, label="Close", marker="s")
 
         plt.xlabel("Date")
         plt.ylabel("Strock Price")
